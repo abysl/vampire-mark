@@ -1,0 +1,50 @@
+# Common
+.idea/
+*.iml
+*.swp
+.DS_Store
+*.log
+*.tmp
+*.bak
+*.user
+*.pidb
+*.pidb.meta
+*.db-bin
+*.db-shm
+*.db-wal
+*.dat
+
+# Godot
+.export/
+.import/
+*.import
+export.cfg
+export_presets.cfg
+*.pck
+*.exe
+
+# libGDX
+/bin/
+/build/
+.gradle/
+/local.properties
+*.apk
+*.keystore
+*.aar
+*.class
+.gradle/
+gradle/
+
+# Bevy
+/target/
+**/target/
+Cargo.lock
+.DS_Store
+
+# Generated files
+.vscode/
+*.csproj
+*.sln
+*.suo
+*.xcodeproj
+*.xcuserstate
