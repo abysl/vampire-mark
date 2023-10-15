@@ -1,10 +1,12 @@
 package com.abysl.vampiremark.screens
 
 import com.abysl.vampiremark.ecs.artemis.component.ArtemisPositionComponent
-import com.abysl.vampiremark.ecs.artemis.component.ArtemisSpriteComponent
+import com.abysl.vampiremark.ecs.artemis.component.ArtemisTextureComponent
 import com.abysl.vampiremark.ecs.artemis.component.ArtemisVelocityComponent
 import com.abysl.vampiremark.ecs.artemis.system.ArtemisMovementSystem
-import com.abysl.vampiremark.ecs.artemis.system.ArtemisRenderSystem
+import com.abysl.vampiremark.render.Drawable
+import com.abysl.vampiremark.render.RenderFrame
+import com.artemis.Aspect
 import com.artemis.World
 import com.artemis.WorldConfigurationBuilder
 import com.badlogic.gdx.Gdx
@@ -20,7 +22,6 @@ class ArtemisScreen : BaseScreen() {
         // Set up Artemis world configuration
         val config = WorldConfigurationBuilder()
             .with(ArtemisMovementSystem())  // Add the movement system here
-            .with(ArtemisRenderSystem(batch))  // Add the render system here
             .build()
 
         // Create Artemis world
@@ -29,9 +30,9 @@ class ArtemisScreen : BaseScreen() {
         // Create player entity
         val player = world.createEntity()
         playerEntityId = player.id
-        val playerPosition = ArtemisPositionComponent().apply { x = 100f; y = 100f }
-        val playerVelocity = ArtemisVelocityComponent().apply { x = 0f; y = 0f }
-        val playerSprite = ArtemisSpriteComponent().setTexture(texture)
+        val playerPosition = ArtemisPositionComponent()
+        val playerVelocity = ArtemisVelocityComponent()
+        val playerSprite = ArtemisTextureComponent().initialize(texture)
         world.edit(playerEntityId).add(playerPosition).add(playerVelocity).add(playerSprite)
     }
 
@@ -39,17 +40,37 @@ class ArtemisScreen : BaseScreen() {
     private val fixedDeltaTime = 1 / 60f  // 60 updates per second
 
     override fun render(delta: Float) {
-//        accumulator += delta
-//        while (accumulator >= fixedDeltaTime) {
-            // Update the world's delta time and process the world
-//            world.delta = fixedDeltaTime
+        super.render(delta)
+        accumulator += delta
+        while (accumulator >= fixedDeltaTime) {
+            world.delta = fixedDeltaTime
             world.process()
-
-//            accumulator -= fixedDeltaTime
-//        }
+            accumulator -= fixedDeltaTime
+        }
     }
 
     override fun dispose() {
         texture.dispose()
+    }
+
+    override fun getRenderFrame(): RenderFrame {
+        val drawables = mutableListOf<Drawable>()
+
+        val textureMapper = world.getMapper(ArtemisTextureComponent::class.java)
+        val positionMapper = world.getMapper(ArtemisPositionComponent::class.java)
+
+        val allEntityIds = world.aspectSubscriptionManager.get(Aspect.all(ArtemisTextureComponent::class.java, ArtemisPositionComponent::class.java)).entities.data.toList()
+
+        for (entityId in allEntityIds) {
+            val textureComponent = textureMapper.get(entityId)
+            val positionComponent = positionMapper.get(entityId)
+            val drawable = Drawable(
+                texture = textureComponent.texture,
+                position = positionComponent.position
+            )
+            drawables.add(drawable)
+        }
+
+        return RenderFrame(drawables)
     }
 }

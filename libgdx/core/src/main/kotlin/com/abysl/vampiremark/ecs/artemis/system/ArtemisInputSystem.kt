@@ -3,6 +3,7 @@ package com.abysl.vampiremark.ecs.artemis.system
 import com.abysl.vampiremark.ecs.artemis.component.ArtemisPlayerTag
 import com.abysl.vampiremark.ecs.artemis.component.ArtemisPositionComponent
 import com.abysl.vampiremark.ecs.artemis.component.ArtemisVelocityComponent
+import com.abysl.vampiremark.world.spatial.conversions.pixel
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.annotations.All
@@ -27,18 +28,18 @@ class ArtemisInputSystem : BaseEntitySystem() {
             val positionComponent = positionMapper.get(entity)
             val velocityComponent = velocityMapper.get(entity)
 
-            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                positionComponent.y += velocityComponent.y * deltaTime
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                positionComponent.y -= velocityComponent.y * deltaTime
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                positionComponent.x -= velocityComponent.x * deltaTime
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                positionComponent.x += velocityComponent.x * deltaTime
-            }
+//            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+//                positionComponent.position += (velocityComponent.velocity.y.toFloat * deltaTime).toInt().pixel
+//            }
+//            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+//                positionComponent.y -= velocityComponent.y * deltaTime
+//            }
+//            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+//                positionComponent.x -= velocityComponent.x * deltaTime
+//            }
+//            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+//                positionComponent.x += velocityComponent.x * deltaTime
+//            }
         }
     }
 }
