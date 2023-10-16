@@ -20,6 +20,8 @@ dependencies {
     api("io.github.libktx:ktx-graphics:$ktxVersion")
     api("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     api("net.onedaybeard.artemis:artemis-odb:2.3.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
 }
 
 tasks {

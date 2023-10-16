@@ -2,4 +2,4 @@ package com.abysl.vampiremark.ecs.artemis.component
 
 import com.artemis.Component
 
-class ArtemisPlayerTag: Component()
+class ArtemisLocalPlayer: Component()

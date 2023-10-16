@@ -1,23 +1,18 @@
 package com.abysl.vampiremark.world.spatial.conversions
 
 import com.abysl.vampiremark.world.spatial.SpatialConfig
-import com.abysl.vampiremark.world.spatial.units.Chunk
-import com.abysl.vampiremark.world.spatial.units.Layer
-import com.abysl.vampiremark.world.spatial.units.Pixel
+import kotlin.math.roundToInt
 
-val Int.pixel: Pixel
-    get() = Pixel(this)
+val Int.tile: Int
+    get() = this * SpatialConfig.TILE_SIZE
 
-val Int.tile: Pixel
-    get() = Pixel(this * SpatialConfig.TILE_SIZE)
+val Double.tile: Int
+    get() = (this * SpatialConfig.TILE_SIZE).toInt()
 
-val Int.chunk: Chunk
-    get() =  Chunk(this)
+val Int.chunk: Int
+    get() = this * SpatialConfig.TILE_SIZE * SpatialConfig.CHUNK_SIZE
 
-val Int.layer: Layer
-    get() = Layer(this)
-
-val Double.tile: Pixel
-    get() = Pixel((this * SpatialConfig.TILE_SIZE).toInt())
+val Double.chunk: Int
+    get() = (this * SpatialConfig.TILE_SIZE * SpatialConfig.CHUNK_SIZE).toInt()
 
 

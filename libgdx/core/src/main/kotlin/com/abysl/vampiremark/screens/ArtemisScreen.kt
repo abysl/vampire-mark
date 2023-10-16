@@ -66,7 +66,7 @@ class ArtemisScreen : BaseScreen() {
             val positionComponent = positionMapper.get(entityId)
             val drawable = Drawable(
                 texture = textureComponent.texture,
-                position = positionComponent.position
+                position = positionComponent.vec
             )
             drawables.add(drawable)
         }
