@@ -12,6 +12,11 @@ abstract class BaseScreen : KtxScreen {
 
     val renderer = GameRenderer(RenderSettings.default_16)
 
+    override fun resize(width: Int, height: Int) {
+        super.resize(width, height)
+        renderer.resize(width, height)
+    }
+
     override fun render(delta: Float) {
         // Clear the screen
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)

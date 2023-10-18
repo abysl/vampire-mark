@@ -1,9 +1,10 @@
 package com.abysl.vampiremark.render
 
-import com.abysl.vampiremark.math.GameVector
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.math.Vector2
 
 data class Drawable(
     val texture: Texture,
-    val position: GameVector
+    val position: Vector2,
+    val layer: Byte
 )

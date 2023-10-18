@@ -6,6 +6,8 @@ import com.artemis.ComponentMapper
 import com.artemis.annotations.All
 import com.artemis.annotations.Wire
 import com.artemis.systems.IteratingSystem
+import ktx.math.plusAssign
+import ktx.math.times
 
 @All(ArtemisPositionComponent::class, ArtemisVelocityComponent::class)
 class ArtemisMovementSystem : IteratingSystem() {
@@ -23,7 +25,7 @@ class ArtemisMovementSystem : IteratingSystem() {
     override fun process(entityId: Int) {
         val position = positionMapper[entityId]
         val velocity = velocityMapper[entityId]
-
-        position.vec += velocity.vec
+        println("p: ${position.vec} v: ${velocity.vec}")
+        position.vec += (velocity.vec * world.delta)
     }
 }

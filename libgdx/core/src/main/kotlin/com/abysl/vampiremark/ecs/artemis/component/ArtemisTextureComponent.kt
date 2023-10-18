@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture
 class ArtemisTextureComponent() : Component() {
     lateinit var texture: Texture
 
-    fun initialize(texture: Texture): ArtemisTextureComponent {
+    fun set(texture: Texture): ArtemisTextureComponent {
         this.texture = texture
         return this
     }

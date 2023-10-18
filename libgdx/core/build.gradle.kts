@@ -15,9 +15,11 @@ java {
 
 dependencies {
     api("com.badlogicgames.gdx:gdx:$gdxVersion")
-    api("io.github.libktx:ktx-app:$ktxVersion")
-    api("io.github.libktx:ktx-assets:$ktxVersion")
-    api("io.github.libktx:ktx-graphics:$ktxVersion")
+    api(ktx("app"))
+    api(ktx("async"))
+    api(ktx("assets"))
+    api(ktx("graphics"))
+    api(ktx("math"))
     api("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     api("net.onedaybeard.artemis:artemis-odb:2.3.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
@@ -37,4 +39,8 @@ eclipse {
     project {
         name = "$appName-core"
     }
+}
+
+fun ktx(module: String): String {
+    return "io.github.libktx:ktx-$module:$ktxVersion"
 }

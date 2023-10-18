@@ -4,64 +4,58 @@ import RenderSettings
 import com.abysl.vampiremark.world.spatial.SpatialConfig
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.Scaling
+import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.ScalingViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.graphics.use
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 class GameRenderer(
-    private var renderSettings: RenderSettings,
+    private val renderSettings: RenderSettings,
     private val batch: SpriteBatch = SpriteBatch(),
 ): Disposable {
 
-    private val camera = OrthographicCamera()
-    private lateinit var viewport: Viewport
+    private val texture: Texture = Texture(Gdx.files.internal("archer.png"))
+    private val camera: OrthographicCamera = OrthographicCamera()
 
     init {
-//        updateViewport(PixelPoint(Gdx.graphics.width.pixel, Gdx.graphics.height.pixel))
-    }
-
-    fun updateRenderSettings(newRenderSettings: RenderSettings) {
-        renderSettings = newRenderSettings
-//        updateViewport(PixelPoint(Gdx.graphics.width.pixel, Gdx.graphics.height.pixel))
-    }
-
-   /* private fun updateViewport(screenDimensions: PixelPoint) {
-        val scaleFactor = calculateScaleFactor(screenDimensions)
-        camera.setToOrtho(false, (renderSettings.viewportResolution.x * scaleFactor).toFloat, (renderSettings.viewportResolution.y * scaleFactor).toFloat)
-        viewport = ScalingViewport(Scaling.none, camera.viewportWidth, camera.viewportHeight, camera)
-    }
-
-    private fun calculateScaleFactor(screenDimensions: PixelPoint): Int {
-        val xScaleFactor = (screenDimensions.x.toFloat / SpatialConfig.TILE_SIZE).roundToInt()
-        val yScaleFactor = (screenDimensions.y.toFloat / SpatialConfig.TILE_SIZE).roundToInt()
-
-        val xArea = (renderSettings.baseResolution * xScaleFactor).area
-        val yArea = (renderSettings.baseResolution * yScaleFactor).area
-
-        val xDiff = (renderSettings.viewportResolution.area - xArea).abs().toInt
-        val yDiff = (renderSettings.viewportResolution.area - yArea).abs().toInt
-
-        return if (xDiff < yDiff) xScaleFactor else yScaleFactor
+        // Set the initial position of the camera to the center of the game world.
+        camera.position.set(0f, 0f, 0f)
+        camera.viewportWidth = renderSettings.baseResolution.x
+        camera.viewportHeight = renderSettings.baseResolution.y
     }
 
     fun resize(width: Int, height: Int) {
-        updateViewport(PixelPoint(width.pixel, height.pixel))
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0f)
-    }*/
+        // Calculate the scaling factor
+        val baseScaleX = width / renderSettings.baseResolution.x
+        val baseScaleY = height / renderSettings.baseResolution.y
+        val scale = min(baseScaleX, baseScaleY).toFloat()
 
-    fun render(renderFrame: RenderFrame) {
-        batch.use { batch ->
-            for (drawable in renderFrame.drawables) {
-//                batch.draw(drawable.texture, drawable.position.x.toFloat, drawable.position.y.toFloat)
+        // Adjust the viewport if the scaled resolution is different from the window size
+        camera.viewportWidth = (width / scale)
+        camera.viewportHeight = (height / scale)
+        camera.update()
+    }
+
+    fun render(renderFrame: RenderFrame, deltaTime: Float) {
+        camera.update()
+        batch.projectionMatrix = camera.combined
+        batch.use {
+            renderFrame.drawables.forEach {
+                it.draw(batch)
             }
+            // Drawing the texture at (0,0) which is the center of the screen
+            batch.draw(texture, -32f , -0f, 16f, 16f)
         }
     }
 
     override fun dispose() {
+        texture.dispose()
         batch.dispose()
     }
 }

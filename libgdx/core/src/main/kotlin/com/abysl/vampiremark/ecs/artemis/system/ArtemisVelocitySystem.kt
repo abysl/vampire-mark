@@ -21,26 +21,31 @@ class ArtemisVelocitySystem : BaseEntitySystem() {
     private val player_speed = 2.tile
 
     override fun processSystem() {
-        val deltaTime = world.delta
-        val entities = subscription.entities
         for (localPlayer in subscription.entities.data) {
-            val positionComponent = positionMapper.get(localPlayer)
-            val velocityComponent = velocityMapper.get(localPlayer)
+            val velocity = velocityMapper.get(localPlayer)
 
+            // Reset velocity
+            velocity.x = 0
+            velocity.y = 0
 
+            // Vertical movement
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                velocityComponent.vec.y = 1
+                velocity.y = 1
+            } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                velocity.y = -1
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                velocityComponent.vec.y = -1
-            }
+
+            // Horizontal movement
             if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                velocityComponent.vec.x = -1
+                velocity.x = -1
+            } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                velocity.x = 1
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                velocityComponent.vec.y = 1
+
+            // Normalize if there's movement
+            if (velocity.x != 0 || velocity.y != 0) {
+                velocity.vec.nor().scl(player_speed.toFloat())
             }
-            velocityComponent.vec.normalize()
         }
     }
 }
