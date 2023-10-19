@@ -8,50 +8,44 @@ import com.abysl.vampiremark.ecs.artemis.system.ArtemisMovementSystem
 import com.abysl.vampiremark.ecs.artemis.system.ArtemisVelocitySystem
 import com.abysl.vampiremark.render.Drawable
 import com.abysl.vampiremark.render.RenderFrame
-import com.abysl.vampiremark.world.spatial.conversions.tile
 import com.artemis.Aspect
 import com.artemis.World
 import com.artemis.WorldConfigurationBuilder
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.Sprite
 
 class ArtemisScreen : BaseScreen() {
 
-    private var world: World
+    private val world: World
     private val texture = Texture(Gdx.files.internal("archer.png"))
     private val playerEntityId: Int
 
     init {
-        // Set up Artemis world configuration
-        val config = WorldConfigurationBuilder()
-            .with(ArtemisVelocitySystem())
-            .with(ArtemisMovementSystem())  // Add the movement system here
-            .build()
-
-        // Create Artemis world
-        world = World(config)
-
-        // Create player entity
-        val player = world.createEntity()
-        playerEntityId = player.id
-        val playerPosition = ArtemisPositionComponent()
-        val playerVelocity = ArtemisVelocityComponent()
-        val playerSprite = ArtemisTextureComponent().set(texture)
-        world.edit(playerEntityId).add(playerPosition).add(playerVelocity).add(playerSprite).add(ArtemisLocalPlayer())
+        world = setupArtemisWorld()
+        playerEntityId = createPlayerEntity()
     }
 
-    private var accumulator = 0f
-    private val fixedDeltaTime = 1 / 60f  // 60 updates per second
+    private fun setupArtemisWorld(): World {
+        val config = WorldConfigurationBuilder()
+            .with(ArtemisVelocitySystem())
+            .with(ArtemisMovementSystem())
+            .build()
+        return World(config)
+    }
 
-    override fun render(delta: Float) {
-        super.render(delta)
-        accumulator += delta
-        while (accumulator >= fixedDeltaTime) {
-            world.delta = fixedDeltaTime
-            world.process()
-            accumulator -= fixedDeltaTime
-        }
+    private fun createPlayerEntity(): Int {
+        val player = world.createEntity()
+        world.edit(player.id)
+            .add(ArtemisPositionComponent())
+            .add(ArtemisVelocityComponent())
+            .add(ArtemisTextureComponent().set(texture))
+            .add(ArtemisLocalPlayer())
+        return player.id
+    }
+
+    override fun update(tickRate: Float) {
+        world.delta = tickRate
+        world.process()
     }
 
     override fun dispose() {
@@ -59,26 +53,28 @@ class ArtemisScreen : BaseScreen() {
     }
 
     override fun getRenderFrame(): RenderFrame {
-
         val textureMapper = world.getMapper(ArtemisTextureComponent::class.java)
         val positionMapper = world.getMapper(ArtemisPositionComponent::class.java)
+        val velocityMapper = world.getMapper(ArtemisVelocityComponent::class.java)
 
-        val allEntityIds = world.aspectSubscriptionManager.get(Aspect.all(ArtemisTextureComponent::class.java, ArtemisPositionComponent::class.java)).entities.data.toList()
+        val allEntityIds = world.aspectSubscriptionManager.get(
+            Aspect.all(ArtemisTextureComponent::class.java, ArtemisPositionComponent::class.java)
+        ).entities.data.toList()
 
-        val sprites = mutableListOf<Sprite>()
-
-        for (entityId in allEntityIds) {
+        val sprites = allEntityIds.map { entityId ->
             val textureComponent = textureMapper.get(entityId)
             val positionComponent = positionMapper.get(entityId)
+            val velocityComponent = velocityMapper.get(entityId)
 
-            val sprite = Sprite(textureComponent.texture)
-            sprite.setSize(1.tile.toFloat(), 1.tile.toFloat())
-            sprite.setPosition(positionComponent.x - sprite.width / 2, positionComponent.y - sprite.height / 2)
-
-            sprites.add(sprite)
+            Drawable(
+                texture = textureComponent.texture,
+                position = positionComponent.vec,
+                layer = positionComponent.z,
+                velocity = velocityComponent?.vec
+            )
         }
-
 
         return RenderFrame(sprites)
     }
+
 }

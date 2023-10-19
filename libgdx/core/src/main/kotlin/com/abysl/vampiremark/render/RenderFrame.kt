@@ -3,5 +3,5 @@ package com.abysl.vampiremark.render
 import com.badlogic.gdx.graphics.g2d.Sprite
 
 data class RenderFrame(
-    val drawables: List<Sprite>
+    val drawables: List<Drawable>
 )

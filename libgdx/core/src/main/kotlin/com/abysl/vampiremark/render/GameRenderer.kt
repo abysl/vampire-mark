@@ -1,26 +1,20 @@
 package com.abysl.vampiremark.render
 
-import RenderSettings
-import com.abysl.vampiremark.world.spatial.SpatialConfig
-import com.badlogic.gdx.Gdx
+import com.abysl.vampiremark.settings.RenderSettings
+import com.abysl.vampiremark.world.spatial.conversions.ftile
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Disposable
-import com.badlogic.gdx.utils.Scaling
-import com.badlogic.gdx.utils.viewport.ExtendViewport
-import com.badlogic.gdx.utils.viewport.ScalingViewport
-import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.graphics.use
+import ktx.math.plus
+import ktx.math.times
 import kotlin.math.min
-import kotlin.math.roundToInt
 
 class GameRenderer(
     private val renderSettings: RenderSettings,
     private val batch: SpriteBatch = SpriteBatch(),
-): Disposable {
+) : Disposable {
 
-    private val texture: Texture = Texture(Gdx.files.internal("archer.png"))
     private val camera: OrthographicCamera = OrthographicCamera()
 
     init {
@@ -42,20 +36,23 @@ class GameRenderer(
         camera.update()
     }
 
-    fun render(renderFrame: RenderFrame, deltaTime: Float) {
+    fun render(renderFrame: RenderFrame, physicsDelta: Float) {
         camera.update()
         batch.projectionMatrix = camera.combined
         batch.use {
-            renderFrame.drawables.forEach {
-                it.draw(batch)
+            renderFrame.drawables.forEach { drawable ->
+                val position =
+                    if (drawable.velocity == null)
+                        drawable.position
+                    else
+                        drawable.position + (drawable.velocity * physicsDelta)
+
+                batch.draw(drawable.texture, position.x, position.y, 1.ftile, 1.ftile)
             }
-            // Drawing the texture at (0,0) which is the center of the screen
-            batch.draw(texture, -32f , -0f, 16f, 16f)
         }
     }
 
     override fun dispose() {
-        texture.dispose()
         batch.dispose()
     }
 }
