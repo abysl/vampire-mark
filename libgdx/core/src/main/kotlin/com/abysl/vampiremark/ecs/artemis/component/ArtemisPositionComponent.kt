@@ -3,6 +3,7 @@ package com.abysl.vampiremark.ecs.artemis.component
 import com.abysl.vampiremark.ecs.artemis.delegates.IntVecDelegate
 import com.artemis.Component
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 
 class ArtemisPositionComponent(x: Int = 0, y: Int = 0, var z: Byte = 0): Component() {
     val vec = Vector2(x.toFloat(), y.toFloat())
@@ -15,5 +16,9 @@ class ArtemisPositionComponent(x: Int = 0, y: Int = 0, var z: Byte = 0): Compone
         this.y = y
         this.z = z
         return this
+    }
+
+    fun set(new: Vector2){
+        vec.set(new)
     }
 }

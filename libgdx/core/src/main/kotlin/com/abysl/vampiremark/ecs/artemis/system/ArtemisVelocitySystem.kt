@@ -18,7 +18,7 @@ class ArtemisVelocitySystem : BaseEntitySystem() {
     @Wire
     private lateinit var velocityMapper: ComponentMapper<ArtemisVelocityComponent>
 
-    private val player_speed = 5.tile
+    private val player_speed = 3.tile
 
     override fun processSystem() {
         for (localPlayer in subscription.entities.data) {

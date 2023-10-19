@@ -7,12 +7,13 @@ import com.abysl.vampiremark.settings.GameSettings
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import ktx.app.KtxScreen
 
 abstract class BaseScreen : KtxScreen {
     val settings: MutableStateFlow<GameSettings> = MutableStateFlow(GameSettings())
+    protected val renderer = GameRenderer(settings)
 
-    protected val renderer = GameRenderer(RenderSettings.default_16)
     protected var physicsDelta = 0f
     var currentRenderFrame: RenderFrame? = null
 

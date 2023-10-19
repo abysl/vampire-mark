@@ -16,5 +16,9 @@ class ArtemisVelocityComponent(x: Int = 0, y: Int = 0, var z: Byte = 0): Compone
         this.z = z
         return this
     }
+
+    fun set(new: Vector2){
+        vec.set(new)
+    }
 }
 
