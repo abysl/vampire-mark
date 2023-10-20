@@ -1,6 +1,7 @@
 package com.abysl.vampiremark.screens
 
 import com.abysl.vampiremark.ecs.artemis.component.*
+import com.abysl.vampiremark.ecs.artemis.entities.EntityFactory
 import com.abysl.vampiremark.ecs.artemis.system.ArtemisCameraSystem
 import com.abysl.vampiremark.ecs.artemis.system.ArtemisMovementSystem
 import com.abysl.vampiremark.ecs.artemis.system.ArtemisVelocitySystem
@@ -15,16 +16,17 @@ import com.badlogic.gdx.graphics.Texture
 
 class ArtemisScreen : BaseScreen() {
 
-    private val world: World
+    private val world: World = setupArtemisWorld()
+    private val entityFactory = EntityFactory(world)
     private val texture = Texture(Gdx.files.internal("archer.png"))
-    private val playerEntityId: Int
-    private val cameraId: Int
 
-    init {
-        world = setupArtemisWorld()
-        playerEntityId = createPlayerEntity()
-        cameraId = createCameraEntity()
-    }
+    // Using the factory to create entities
+    private val playerEntityId = entityFactory.createPlayer(texture)
+    private val cameraId = entityFactory.createCamera()
+
+    private val textureMapper = world.getMapper(ArtemisTextureComponent::class.java)
+    private val positionMapper = world.getMapper(ArtemisPositionComponent::class.java)
+    private val velocityMapper = world.getMapper(ArtemisVelocityComponent::class.java)
 
     private fun setupArtemisWorld(): World {
         val config = WorldConfigurationBuilder()
@@ -35,24 +37,6 @@ class ArtemisScreen : BaseScreen() {
         return World(config)
     }
 
-    private fun createPlayerEntity(): Int {
-        val player = world.createEntity()
-        world.edit(player.id)
-            .add(ArtemisPositionComponent())
-            .add(ArtemisVelocityComponent())
-            .add(ArtemisTextureComponent().set(texture))
-            .add(ArtemisLocalPlayer())
-        return player.id
-    }
-
-    private fun createCameraEntity(): Int {
-        val camera = world.createEntity()
-        world.edit(camera.id)
-            .add(ArtemisCameraComponent())
-            .add(ArtemisPositionComponent())
-            .add(ArtemisVelocityComponent())
-        return camera.id
-    }
     override fun update(tickRate: Float) {
         world.delta = tickRate
         world.process()
@@ -63,13 +47,10 @@ class ArtemisScreen : BaseScreen() {
     }
 
     override fun getRenderFrame(): RenderFrame {
-        val textureMapper = world.getMapper(ArtemisTextureComponent::class.java)
-        val positionMapper = world.getMapper(ArtemisPositionComponent::class.java)
-        val velocityMapper = world.getMapper(ArtemisVelocityComponent::class.java)
-
         val allEntityIds = world.aspectSubscriptionManager.get(
             Aspect.all(ArtemisTextureComponent::class.java, ArtemisPositionComponent::class.java)
         ).entities.data.toList()
+
         val cameraPosition = world.getEntity(cameraId).getComponent(ArtemisPositionComponent::class.java).vec
         val cameraVelocity = world.getEntity(cameraId).getComponent(ArtemisVelocityComponent::class.java).vec
 
@@ -88,5 +69,4 @@ class ArtemisScreen : BaseScreen() {
 
         return RenderFrame(sprites, CameraPosition(cameraPosition, cameraVelocity))
     }
-
 }
