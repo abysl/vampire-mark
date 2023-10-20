@@ -1,5 +1,6 @@
 package com.abysl.vampiremark.screens
 
+import com.abysl.vampiremark.render.FPSCounter
 import com.abysl.vampiremark.settings.RenderSettings
 import com.abysl.vampiremark.render.GameRenderer
 import com.abysl.vampiremark.render.RenderFrame
@@ -23,8 +24,6 @@ abstract class BaseScreen : KtxScreen {
     }
 
     override fun render(delta: Float) {
-        clearScreen()
-
         physicsDelta += delta
         val tickRate = settings.value.physicsSettings.tickRate
         while (physicsDelta >= tickRate) {
@@ -36,11 +35,6 @@ abstract class BaseScreen : KtxScreen {
         currentRenderFrame?.let {
             renderer.render(it, physicsDelta)
         }
-    }
-
-    private fun clearScreen() {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
     }
 
     override fun dispose() {

@@ -25,7 +25,6 @@ class ArtemisMovementSystem : IteratingSystem() {
     override fun process(entityId: Int) {
         val position = positionMapper[entityId]
         val velocity = velocityMapper[entityId]
-        println("p: ${position.vec} v: ${velocity.vec}")
         position.vec += (velocity.vec * world.delta)
     }
 }

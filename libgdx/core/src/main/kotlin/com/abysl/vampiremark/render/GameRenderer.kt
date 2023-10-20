@@ -4,6 +4,8 @@ import com.abysl.vampiremark.settings.GameSettings
 import com.abysl.vampiremark.settings.RenderSettings
 import com.abysl.vampiremark.world.spatial.conversions.ftile
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -31,60 +33,43 @@ class GameRenderer(
     }
 
     fun resize(width: Int, height: Int) {
-        // Calculate the scaling factor
         val baseScaleX = width / renderSettings.baseResolution.x
         val baseScaleY = height / renderSettings.baseResolution.y
         val scale = min(baseScaleX, baseScaleY)
 
-        // Adjust the viewport if the scaled resolution is different from the window size
         camera.viewportWidth = (width / scale)
         camera.viewportHeight = (height / scale)
         camera.update()
     }
 
     fun render(renderFrame: RenderFrame, physicsDelta: Float) {
-        // Interpolate camera's position
+        clearScreen()
+
         val interpolatedCameraPos = renderFrame.cameraPosition.position + renderFrame.cameraPosition.velocity * physicsDelta
         camera.position.set(interpolatedCameraPos, 0f)
         camera.update()
 
         batch.projectionMatrix = camera.combined
         batch.use {
-            // Draw infinite checkerboard pattern
-            val tileSize = 16f
-            val texture1 = Texture(Gdx.files.internal("blue.png")) // Load your first texture
-            val texture2 = Texture(Gdx.files.internal("rgchecker.png")) // Load your second texture
-
-            val baseX = (camera.position.x - camera.viewportWidth / 2).toInt()
-            val baseY = (camera.position.y - camera.viewportHeight / 2).toInt()
-            val endX = (camera.position.x + camera.viewportWidth / 2).toInt()
-            val endY = (camera.position.y + camera.viewportHeight / 2).toInt()
-
-            val offsetStartX = baseX % tileSize.toInt()
-            val offsetStartY = baseY % tileSize.toInt()
-
-            for (x in (baseX - offsetStartX)..endX step tileSize.toInt()) {
-                for (y in (baseY - offsetStartY)..endY step tileSize.toInt()) {
-                    val texture = if ((x / tileSize.toInt() + y / tileSize.toInt()) % 2 == 0) texture1 else texture2
-                    batch.draw(texture, x.toFloat(), y.toFloat(), tileSize, tileSize)
-                }
-            }
-
-
-
-            // Render other drawables
             renderFrame.drawables.forEach { drawable ->
                 val position =
-                    if (drawable.velocity == null)
-                        drawable.position
-                    else
+                    if(drawable.velocity != null) {
                         drawable.position + (drawable.velocity * physicsDelta)
+                    }else {
+                        drawable.position
+                    }
                 batch.draw(drawable.texture, position.x, position.y, 1.ftile, 1.ftile)
             }
         }
+    }
+
+    private fun clearScreen() {
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
     }
 
     override fun dispose() {
         batch.dispose()
     }
 }
+
