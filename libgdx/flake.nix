@@ -50,7 +50,7 @@
             motd = ''
               Entered the Android app development environment.
             '';
-            buildInputs = commonBuildInputs ++ [ pkgs.android-sdk pkgs.jetbrains.idea-ultimate ];
+            buildInputs = commonBuildInputs ++ [ pkgs.android-sdk pkgs.jetbrains.idea-ultimate pkgs.aseprite ];
           };
 
           ci = pkgs.mkShell {

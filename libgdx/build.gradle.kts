@@ -11,7 +11,9 @@ buildscript {
     maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
   }
   dependencies {
-    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+      val kotlinVersion: String by project
+      classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+      classpath("org.jetbrains.kotlin:kotlin-serialization:${kotlinVersion}")
   }
 }
 
@@ -44,6 +46,3 @@ subprojects {
   }
 }
 
-tasks.withType<org.gradle.plugins.ide.eclipse.model.EclipseProject> {
-  name = "vampiremark-parent"
-}

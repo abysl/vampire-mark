@@ -5,7 +5,8 @@ val kotlinVersion = project.property("kotlinVersion") as String
 
 plugins {
     id("java-library")
-    id("kotlin")
+    kotlin("jvm")
+    kotlin("plugin.serialization")
 }
 
 java {
@@ -22,6 +23,7 @@ dependencies {
     api(ktx("math"))
     api("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     api("net.onedaybeard.artemis:artemis-odb:2.3.0")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
 }
