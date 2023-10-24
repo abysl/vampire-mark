@@ -14,6 +14,7 @@ buildscript {
       val kotlinVersion: String by project
       classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
       classpath("org.jetbrains.kotlin:kotlin-serialization:${kotlinVersion}")
+      classpath("com.squareup:kotlinpoet:1.14.2")
   }
 }
 
@@ -41,7 +42,7 @@ subprojects {
   tasks.withType<KotlinCompile> {
     kotlinOptions {
       jvmTarget = "17"
-      freeCompilerArgs = listOf("-Xjvm-default=compatibility")
+      freeCompilerArgs = listOf("-Xjvm-default=all")
     }
   }
 }

@@ -1,7 +1,7 @@
-package com.abysl.vampiremark.ecs.artemis.system
+package com.abysl.vampiremark.ecs.system
 
-import com.abysl.vampiremark.ecs.artemis.component.ArtemisPositionComponent
-import com.abysl.vampiremark.ecs.artemis.component.ArtemisVelocityComponent
+import com.abysl.vampiremark.ecs.components.PositionComponent
+import com.abysl.vampiremark.ecs.components.VelocityComponent
 import com.artemis.ComponentMapper
 import com.artemis.annotations.All
 import com.artemis.annotations.Wire
@@ -9,13 +9,13 @@ import com.artemis.systems.IteratingSystem
 import ktx.math.plusAssign
 import ktx.math.times
 
-@All(ArtemisPositionComponent::class, ArtemisVelocityComponent::class)
-class ArtemisMovementSystem : IteratingSystem() {
+@All(PositionComponent::class, VelocityComponent::class)
+class MovementSystem : IteratingSystem() {
 
     @Wire
-    private lateinit var positionMapper: ComponentMapper<ArtemisPositionComponent>
+    private lateinit var positionMapper: ComponentMapper<PositionComponent>
     @Wire
-    private lateinit var velocityMapper: ComponentMapper<ArtemisVelocityComponent>
+    private lateinit var velocityMapper: ComponentMapper<VelocityComponent>
 
     override fun initialize() {
         super.initialize()
@@ -26,5 +26,8 @@ class ArtemisMovementSystem : IteratingSystem() {
         val position = positionMapper[entityId]
         val velocity = velocityMapper[entityId]
         position.vec += (velocity.vec * world.delta)
+
+        val entity = world.getEntity(entityId)
+
     }
 }

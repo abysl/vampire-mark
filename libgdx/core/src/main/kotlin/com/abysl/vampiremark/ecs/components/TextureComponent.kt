@@ -1,12 +1,12 @@
-package com.abysl.vampiremark.ecs.artemis.component
+package com.abysl.vampiremark.ecs.components
 
 import com.artemis.Component
 import com.badlogic.gdx.graphics.Texture
 
-class ArtemisTextureComponent() : Component() {
+class TextureComponent() : Component() {
     lateinit var texture: Texture
 
-    fun set(texture: Texture): ArtemisTextureComponent {
+    fun set(texture: Texture): TextureComponent {
         this.texture = texture
         return this
     }

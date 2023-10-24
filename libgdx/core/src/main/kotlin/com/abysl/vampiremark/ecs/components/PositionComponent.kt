@@ -1,16 +1,16 @@
-package com.abysl.vampiremark.ecs.artemis.component
+package com.abysl.vampiremark.ecs.components
 
-import com.abysl.vampiremark.ecs.artemis.delegates.IntVecDelegate
+import com.abysl.vampiremark.ecs.delegates.IntVecDelegate
 import com.artemis.Component
 import com.badlogic.gdx.math.Vector2
 
-class ArtemisVelocityComponent(x: Int = 0, y: Int = 0, var z: Byte = 0): Component() {
+class PositionComponent(x: Int = 0, y: Int = 0, var z: Byte = 0): Component() {
     val vec = Vector2(x.toFloat(), y.toFloat())
 
     var x by IntVecDelegate(vec)
     var y by IntVecDelegate(vec)
 
-    fun set(x: Int = 0, y: Int = 0, z: Byte = 0): ArtemisVelocityComponent {
+    fun set(x: Int = 0, y: Int = 0, z: Byte = 0): PositionComponent {
         this.x = x
         this.y = y
         this.z = z
@@ -21,4 +21,3 @@ class ArtemisVelocityComponent(x: Int = 0, y: Int = 0, var z: Byte = 0): Compone
         vec.set(new)
     }
 }
-

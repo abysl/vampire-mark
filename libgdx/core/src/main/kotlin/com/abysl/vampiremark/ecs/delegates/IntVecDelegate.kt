@@ -1,4 +1,4 @@
-package com.abysl.vampiremark.ecs.artemis.delegates
+package com.abysl.vampiremark.ecs.delegates
 
 import com.badlogic.gdx.math.Vector2
 import kotlin.reflect.KProperty

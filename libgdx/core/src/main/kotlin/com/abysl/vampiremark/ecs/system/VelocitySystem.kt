@@ -1,8 +1,8 @@
-package com.abysl.vampiremark.ecs.artemis.system
+package com.abysl.vampiremark.ecs.system
 
-import com.abysl.vampiremark.ecs.artemis.component.ArtemisLocalPlayer
-import com.abysl.vampiremark.ecs.artemis.component.ArtemisPositionComponent
-import com.abysl.vampiremark.ecs.artemis.component.ArtemisVelocityComponent
+import com.abysl.vampiremark.ecs.components.LocalPlayerComponent
+import com.abysl.vampiremark.ecs.components.PositionComponent
+import com.abysl.vampiremark.ecs.components.VelocityComponent
 import com.abysl.vampiremark.world.spatial.conversions.tile
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
@@ -11,12 +11,12 @@ import com.artemis.annotations.Wire
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 
-@All(ArtemisPositionComponent::class, ArtemisVelocityComponent::class, ArtemisLocalPlayer::class)
-class ArtemisVelocitySystem : BaseEntitySystem() {
+@All(PositionComponent::class, VelocityComponent::class, LocalPlayerComponent::class)
+class VelocitySystem : BaseEntitySystem() {
     @Wire
-    private lateinit var positionMapper: ComponentMapper<ArtemisPositionComponent>
+    private lateinit var positionMapper: ComponentMapper<PositionComponent>
     @Wire
-    private lateinit var velocityMapper: ComponentMapper<ArtemisVelocityComponent>
+    private lateinit var velocityMapper: ComponentMapper<VelocityComponent>
 
     private val player_speed = 3.tile
 
