@@ -20,7 +20,7 @@ class ArtemisScreen : BaseScreen() {
 
     private val world: World = setupArtemisWorld()
     private val entityFactory = EntityFactory(world)
-    private val texture = Texture(Gdx.files.internal("archer.png"))
+    private val texture = Texture(Gdx.files.internal("fmt/monsters/archer_r1.png"))
 
     // Using the factory to create entities
     private val playerEntityId = entityFactory.createPlayer(texture)
