@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Tile(
     val name: String,
+    val aliases: List<String>,
     val properties: List<TileProperty>
 )
