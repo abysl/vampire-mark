@@ -1,6 +1,6 @@
 package com.abysl.vampiremark.render
 
-import com.abysl.vampiremark.ecs.GameWorld
+import com.abysl.vampiremark.world.GameWorld
 import com.abysl.vampiremark.ecs.components.PositionComponent
 import com.abysl.vampiremark.ecs.components.TextureComponent
 import com.artemis.Aspect
@@ -22,9 +22,6 @@ class EcsFrameAdapter(private val world: GameWorld) {
             Aspect.all(TextureComponent::class.java, PositionComponent::class.java)
         ).entities.data.filter { it != 0 }
 
-
-        println(drawableEntities)
-        drawableEntities.forEach(::println)
 
         val sprites: List<Drawable> = drawableEntities.map { entityId ->
             val texture = world.mappers.texture.get(entityId).texture

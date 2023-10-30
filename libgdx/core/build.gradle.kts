@@ -22,7 +22,7 @@ dependencies {
     api("com.badlogicgames.gdx:gdx:$gdxVersion")
     api(ktx("app"))
     api(ktx("async"))
-    api(ktx("assets"))
+    api(ktx("assets-async"))
     api(ktx("graphics"))
     api(ktx("math"))
     api("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")

@@ -1,15 +1,17 @@
 package com.abysl.vampiremark.screens
 
-import com.abysl.vampiremark.ecs.GameWorld
-import com.abysl.vampiremark.ecs.system.CameraSystem
-import com.abysl.vampiremark.ecs.system.MovementSystem
-import com.abysl.vampiremark.ecs.system.VelocitySystem
+import com.abysl.vampiremark.assets.GameAssets
+import com.abysl.vampiremark.assets.TileSetLoader
+import com.abysl.vampiremark.world.GameWorld
 import com.abysl.vampiremark.render.*
 import com.abysl.vampiremark.settings.GameSettings
-import com.artemis.World
-import com.artemis.WorldConfigurationBuilder
+import com.abysl.vampiremark.world.tiles.TileSet
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver
 import kotlinx.coroutines.flow.MutableStateFlow
 import ktx.app.KtxScreen
+import ktx.assets.async.AssetStorage
+import ktx.async.newAsyncContext
 
 class GameScreen : KtxScreen {
     val settings: MutableStateFlow<GameSettings> = MutableStateFlow(GameSettings())
@@ -20,6 +22,12 @@ class GameScreen : KtxScreen {
     private val world = GameWorld()
     private val ecsFrameAdapter = EcsFrameAdapter(world)
     private val renderer = GameRenderer(settings)
+    private val assets = GameAssets(settings.value)
+
+    init {
+        assets.local.loadSync<TileSet>("data/tilesets/world.tiles").tiles.forEach(::println)
+
+    }
 
 
     override fun resize(width: Int, height: Int) {

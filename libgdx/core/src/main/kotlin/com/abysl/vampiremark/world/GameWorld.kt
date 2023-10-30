@@ -1,4 +1,4 @@
-package com.abysl.vampiremark.ecs
+package com.abysl.vampiremark.world
 
 import com.abysl.vampiremark.ecs.entities.EntityFactory
 import com.abysl.vampiremark.ecs.entities.EntityMappers
