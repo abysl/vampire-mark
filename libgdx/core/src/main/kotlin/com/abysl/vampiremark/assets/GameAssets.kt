@@ -43,12 +43,12 @@ class GameAssets(gameSettings: GameSettings) {
             Tile(
                 name = "StairDown",
                 aliases = listOf("wall_cave_stair_down"),
-                properties = listOf(TileProperty.LevelShiftProperty(ascend = Direction.SOUTH, shift = -1))
+                properties = listOf(TileProperty.LevelShift(ascend = Direction.SOUTH, shift = -1))
             ),
             Tile(
                 name = "StairUp",
                 aliases = listOf("wall_cave_stair_up"),
-                properties = listOf(TileProperty.LevelShiftProperty(ascend = Direction.NORTH, shift = 1))
+                properties = listOf(TileProperty.LevelShift(ascend = Direction.NORTH, shift = 1))
             ),
             Tile(
                 name = "GrassTuft",
