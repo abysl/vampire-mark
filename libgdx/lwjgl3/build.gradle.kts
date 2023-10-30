@@ -57,9 +57,9 @@ runtime {
         installerName = "VampireMarkInstaller"
         installerType = type
         imageOptions = when {
-            os.contains("win") -> listOf("--icon", "$projectDir/assets/fmt/monsters/void_d1.ico")
-            os.contains("mac") -> listOf("--icon", "$projectDir/assets/fmt/monsters/void_d1.icns")
-            else -> listOf("--icon", "$projectDir/assets/fmt/monsters/void_d1.png")
+            os.contains("win") -> listOf("--icon", "$rootDir/assets/fmt/monsters/void_d1.ico")
+            os.contains("mac") -> listOf("--icon", "$rootDir/assets/fmt/monsters/void_d1.icns")
+            else -> listOf("--icon", "$rootDir/assets/fmt/monsters/void_d1.png")
         }
         installerOptions = if (type == "exe") listOf("--win-menu", "--win-shortcut") else emptyList()
     }

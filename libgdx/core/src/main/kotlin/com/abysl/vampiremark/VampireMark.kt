@@ -1,14 +1,14 @@
 package com.abysl.vampiremark
 
-import com.abysl.vampiremark.screens.ArtemisScreen
+import com.abysl.vampiremark.screens.GameScreen
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
 
 class VampireMark : KtxGame<KtxScreen>() {
 
     override fun create() {
-        addScreen(ArtemisScreen())
+        addScreen(GameScreen())
         // Set initial screen
-        setScreen<ArtemisScreen>()
+        setScreen<GameScreen>()
     }
 }

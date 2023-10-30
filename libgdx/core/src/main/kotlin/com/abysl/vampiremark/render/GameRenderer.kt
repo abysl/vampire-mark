@@ -4,10 +4,8 @@ import com.abysl.vampiremark.settings.GameSettings
 import com.abysl.vampiremark.settings.RenderSettings
 import com.abysl.vampiremark.world.spatial.conversions.ftile
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow

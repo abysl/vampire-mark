@@ -1,22 +1,26 @@
 package com.abysl.vampiremark.screens
 
-import com.abysl.vampiremark.render.FPSCounter
-import com.abysl.vampiremark.settings.RenderSettings
-import com.abysl.vampiremark.render.GameRenderer
-import com.abysl.vampiremark.render.RenderFrame
+import com.abysl.vampiremark.ecs.GameWorld
+import com.abysl.vampiremark.ecs.system.CameraSystem
+import com.abysl.vampiremark.ecs.system.MovementSystem
+import com.abysl.vampiremark.ecs.system.VelocitySystem
+import com.abysl.vampiremark.render.*
 import com.abysl.vampiremark.settings.GameSettings
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.GL20
+import com.artemis.World
+import com.artemis.WorldConfigurationBuilder
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
 import ktx.app.KtxScreen
 
-abstract class BaseScreen : KtxScreen {
+class GameScreen : KtxScreen {
     val settings: MutableStateFlow<GameSettings> = MutableStateFlow(GameSettings())
-    protected val renderer = GameRenderer(settings)
 
     protected var physicsDelta = 0f
     var currentRenderFrame: RenderFrame? = null
+
+    private val world = GameWorld()
+    private val ecsFrameAdapter = EcsFrameAdapter(world)
+    private val renderer = GameRenderer(settings)
+
 
     override fun resize(width: Int, height: Int) {
         super.resize(width, height)
@@ -27,8 +31,8 @@ abstract class BaseScreen : KtxScreen {
         physicsDelta += delta
         val tickRate = settings.value.physicsSettings.tickRate
         while (physicsDelta >= tickRate) {
-            update(tickRate)
-            currentRenderFrame = getRenderFrame()
+            world.update(tickRate)
+            currentRenderFrame = ecsFrameAdapter.getFrame()
             physicsDelta -= tickRate
         }
 
@@ -40,7 +44,4 @@ abstract class BaseScreen : KtxScreen {
     override fun dispose() {
         renderer.dispose()
     }
-
-    abstract fun update(tickRate: Float)
-    abstract fun getRenderFrame(): RenderFrame
 }

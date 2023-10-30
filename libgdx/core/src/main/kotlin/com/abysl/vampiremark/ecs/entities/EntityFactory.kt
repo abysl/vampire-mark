@@ -6,10 +6,6 @@ import com.badlogic.gdx.graphics.Texture
 
 class EntityFactory(private val world: World) {
 
-    private val textureMapper = world.getMapper(TextureComponent::class.java)
-    private val positionMapper = world.getMapper(PositionComponent::class.java)
-    private val velocityMapper = world.getMapper(VelocityComponent::class.java)
-
     fun createPlayer(texture: Texture): Int {
         val player = world.createEntity()
         world.edit(player.id)
@@ -29,5 +25,4 @@ class EntityFactory(private val world: World) {
         return camera.id
     }
 
-    // Other entity creation methods can go here...
 }
