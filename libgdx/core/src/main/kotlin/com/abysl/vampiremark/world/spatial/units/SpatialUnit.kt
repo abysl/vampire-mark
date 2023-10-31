@@ -66,8 +66,3 @@ data class Chunk(private val chunkValue: Int) : SpatialUnit(chunkValue * Spatial
 
 @Serializable
 data class Layer(val value: Int)
-
-object SpatialConfig {
-    const val TILE_SIZE = 16
-    const val CHUNK_SIZE = 16
-}

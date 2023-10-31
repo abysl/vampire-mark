@@ -3,12 +3,13 @@ package com.abysl.vampiremark.render
 import com.abysl.vampiremark.world.GameWorld
 import com.abysl.vampiremark.ecs.components.movement.PositionComponent
 import com.abysl.vampiremark.ecs.components.TextureComponent
+import com.abysl.vampiremark.world.tiles.ImmutableTileMap
 import com.artemis.Aspect
 
 class EcsFrameAdapter(private val world: GameWorld) {
 
     fun getFrame(): RenderFrame {
-        return RenderFrame(getSprites(), getCameraVectors())
+        return RenderFrame(getSprites(), getCameraVectors(), world.tilemap)
     }
 
     private fun getCameraVectors(): CameraPosition {

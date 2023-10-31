@@ -1,9 +1,9 @@
 package com.abysl.vampiremark.world.tiles
 
-import com.abysl.vampiremark.world.spatial.coordinates.TileCoord
+import com.abysl.vampiremark.world.spatial.coordinates.TileCoordinate
 
 data class TileStack(
-    val coord: TileCoord,
+    val coord: TileCoordinate,
     val tiles: MutableList<TileMapTile> = mutableListOf()
 ) {
 

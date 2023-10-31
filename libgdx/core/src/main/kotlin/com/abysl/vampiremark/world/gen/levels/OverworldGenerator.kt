@@ -1,8 +1,9 @@
 package com.abysl.vampiremark.world.gen.levels
 
+import com.abysl.vampiremark.world.gen.WorldGenerator
 import com.abysl.vampiremark.world.spatial.SpatialConfig
-import com.abysl.vampiremark.world.spatial.coordinates.ChunkCoord
-import com.abysl.vampiremark.world.spatial.coordinates.TileCoord
+import com.abysl.vampiremark.world.spatial.coordinates.ChunkCoordinate
+import com.abysl.vampiremark.world.spatial.coordinates.TileCoordinate
 import com.abysl.vampiremark.world.spatial.units.Tile
 import com.abysl.vampiremark.world.spatial.units.UnitExtensions.layer
 import com.abysl.vampiremark.world.spatial.units.UnitExtensions.tile
@@ -16,7 +17,7 @@ class OverworldGenerator(
     private val tileSets: List<TileSet>,
     private val noiseScale: Double = 0.5,
     private val seed: Long = 22,
-) {
+) : WorldGenerator {
 
     constructor(tileSet: TileSet, noiseScale: Double = 0.5, seed: Long = 22): this(listOf(tileSet), noiseScale, seed)
 
@@ -27,24 +28,24 @@ class OverworldGenerator(
         .setSeed(seed)
         .build()
 
-    fun generateChunk(chunkCoord: ChunkCoord): TileMapChunk {
+    override fun generateChunk(chunkCoordinate: ChunkCoordinate): TileMapChunk {
         val chunkSize = SpatialConfig.CHUNK_SIZE
         val tileSize = SpatialConfig.TILE_SIZE
 
-        val chunk = TileMapChunk(chunkCoord)
+        val chunk = TileMapChunk(chunkCoordinate)
 
         for (x in 0 until chunkSize) {
             for (y in 0 until chunkSize) {
-                val tileStack = TileStack(TileCoord(x.tile, y.tile, 0.layer))
-                val worldX = (chunkCoord.xChunk.value * chunkSize + x) * tileSize
-                val worldY = (chunkCoord.yChunk.value * chunkSize + y) * tileSize
+                val tileStack = TileStack(TileCoordinate(x.tile, y.tile, 0.layer))
+                val worldX = (chunkCoordinate.xChunk.value * chunkSize + x) * tileSize
+                val worldY = (chunkCoordinate.yChunk.value * chunkSize + y) * tileSize
                 val noiseValue =
                     noise.getNoise(worldX.toDouble() * noiseScale, worldY.toDouble() * noiseScale).toFloat()
 
-                val tileCoord = TileCoord(
-                    Tile(chunkCoord.xChunk.value * chunkSize + x),
-                    Tile(chunkCoord.yChunk.value * chunkSize + y),
-                    chunkCoord.zLayer
+                val tileCoordinate = TileCoordinate(
+                    Tile(chunkCoordinate.xChunk.value * chunkSize + x),
+                    Tile(chunkCoordinate.yChunk.value * chunkSize + y),
+                    chunkCoordinate.zLayer
                 )
 
                 // Base terrain (grass) with a chance of other features
@@ -82,7 +83,7 @@ class OverworldGenerator(
                     }
                 }
 
-                chunk.setTileStack(tileCoord, tileStack)
+                chunk.setTileStack(tileCoordinate, tileStack)
             }
         }
         return chunk

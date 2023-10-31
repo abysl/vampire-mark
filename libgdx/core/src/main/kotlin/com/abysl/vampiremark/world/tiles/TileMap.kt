@@ -1,14 +1,18 @@
 package com.abysl.vampiremark.world.tiles
 
-import com.abysl.vampiremark.world.spatial.coordinates.TileCoord
+import com.abysl.vampiremark.world.spatial.coordinates.ChunkCoordinate
+import com.abysl.vampiremark.world.spatial.coordinates.TileCoordinate
 
-interface TileMap {
+interface ImmutableTileMap {
+    fun getTileStack(tileCoordinate: TileCoordinate): TileStack?
+    fun getTileStacks(tileCoordinates: List<TileCoordinate>): Map<TileCoordinate, TileStack>
+    fun getChunk(chunkCoordinate: ChunkCoordinate): TileMapChunk
 
-    fun getTileStack(coord: TileCoord): TileStack?
+}
+interface TileMap: ImmutableTileMap {
+    fun setTileStack(coordinate: TileCoordinate, tileStack: TileStack)
 
-    fun setTileStack(coord: TileCoord, tileStack: TileStack)
+    fun setTileStacks(tileStacks: Map<TileCoordinate, TileStack>)
 
-    fun getTileStacks(coords: List<TileCoord>): Map<TileCoord, TileStack>
-
-    fun setTileStacks(tileStacks: Map<TileCoord, TileStack>)
+    fun setChunk(chunkCoordinate: ChunkCoordinate, chunk: TileMapChunk)
 }

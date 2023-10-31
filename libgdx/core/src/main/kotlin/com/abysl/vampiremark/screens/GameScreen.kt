@@ -5,6 +5,10 @@ import com.abysl.vampiremark.assets.TileSetLoader
 import com.abysl.vampiremark.world.GameWorld
 import com.abysl.vampiremark.render.*
 import com.abysl.vampiremark.settings.GameSettings
+import com.abysl.vampiremark.world.gen.levels.OverworldGenerator
+import com.abysl.vampiremark.world.tiles.ChunkedTileMap
+import com.abysl.vampiremark.world.tiles.TileMap
+import com.abysl.vampiremark.world.tiles.TileMapChunk
 import com.abysl.vampiremark.world.tiles.TileSet
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver
@@ -19,14 +23,14 @@ class GameScreen : KtxScreen {
     protected var physicsDelta = 0f
     var currentRenderFrame: RenderFrame? = null
 
-    private val world = GameWorld()
-    private val ecsFrameAdapter = EcsFrameAdapter(world)
     private val renderer = GameRenderer(settings)
     private val assets = GameAssets(settings.value)
+    private val tilemap: TileMap = ChunkedTileMap(OverworldGenerator(assets.local.loadSync<TileSet>("data/tilesets/world.tiles")))
+    private val world = GameWorld(tilemap)
+    private val ecsFrameAdapter = EcsFrameAdapter(world)
 
     init {
         assets.local.loadSync<TileSet>("data/tilesets/world.tiles").tiles.forEach(::println)
-
     }
 
 

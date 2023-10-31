@@ -5,12 +5,15 @@ import com.abysl.vampiremark.ecs.entities.EntityMappers
 import com.abysl.vampiremark.ecs.system.CameraSystem
 import com.abysl.vampiremark.ecs.system.MovementSystem
 import com.abysl.vampiremark.ecs.system.VelocitySystem
+import com.abysl.vampiremark.world.gen.levels.OverworldGenerator
+import com.abysl.vampiremark.world.tiles.ChunkedTileMap
+import com.abysl.vampiremark.world.tiles.TileMap
 import com.artemis.World
 import com.artemis.WorldConfigurationBuilder
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 
-class GameWorld {
+class GameWorld(val tilemap: TileMap) {
     val ecs: World = initWorld()
     val entityFactory: EntityFactory = EntityFactory(ecs)
     val mappers: EntityMappers = EntityMappers(ecs)
