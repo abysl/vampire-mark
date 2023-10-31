@@ -1,6 +1,8 @@
 package com.abysl.vampiremark.ecs.entities
 
 import com.abysl.vampiremark.ecs.components.*
+import com.abysl.vampiremark.ecs.components.movement.PositionComponent
+import com.abysl.vampiremark.ecs.components.movement.VelocityComponent
 import com.artemis.World
 import com.badlogic.gdx.graphics.Texture
 

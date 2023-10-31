@@ -1,6 +1,5 @@
 package com.abysl.vampiremark.settings
 
-import com.abysl.vampiremark.world.spatial.conversions.tile
 import com.badlogic.gdx.math.Vector2
 
 data class RenderSettings(

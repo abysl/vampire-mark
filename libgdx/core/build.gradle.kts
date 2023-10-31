@@ -25,9 +25,11 @@ dependencies {
     api(ktx("assets-async"))
     api(ktx("graphics"))
     api(ktx("math"))
+    api(ktx("log"))
     api("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-    api("net.onedaybeard.artemis:artemis-odb:2.3.0")
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("net.onedaybeard.artemis:artemis-odb:2.3.0")
+    implementation("de.articdive:jnoise:3.0.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
 }

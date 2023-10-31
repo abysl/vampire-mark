@@ -1,9 +1,9 @@
 package com.abysl.vampiremark.ecs.system
 
 import com.abysl.vampiremark.ecs.components.LocalPlayerComponent
-import com.abysl.vampiremark.ecs.components.PositionComponent
-import com.abysl.vampiremark.ecs.components.VelocityComponent
-import com.abysl.vampiremark.world.spatial.conversions.tile
+import com.abysl.vampiremark.ecs.components.movement.PositionComponent
+import com.abysl.vampiremark.ecs.components.movement.VelocityComponent
+import com.abysl.vampiremark.world.spatial.units.UnitExtensions.tile
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.annotations.All
@@ -44,7 +44,7 @@ class VelocitySystem : BaseEntitySystem() {
 
             // Normalize if there's movement
             if (velocity.x != 0 || velocity.y != 0) {
-                velocity.vec.nor().scl(player_speed.toFloat())
+                velocity.vec.nor().scl(player_speed.toUnitFloat())
             }
         }
     }

@@ -1,7 +1,7 @@
 package com.abysl.vampiremark.render
 
 import com.abysl.vampiremark.world.GameWorld
-import com.abysl.vampiremark.ecs.components.PositionComponent
+import com.abysl.vampiremark.ecs.components.movement.PositionComponent
 import com.abysl.vampiremark.ecs.components.TextureComponent
 import com.artemis.Aspect
 

@@ -1,7 +1,7 @@
 package com.abysl.vampiremark.ecs.system
 
-import com.abysl.vampiremark.ecs.components.PositionComponent
-import com.abysl.vampiremark.ecs.components.VelocityComponent
+import com.abysl.vampiremark.ecs.components.movement.PositionComponent
+import com.abysl.vampiremark.ecs.components.movement.VelocityComponent
 import com.artemis.ComponentMapper
 import com.artemis.annotations.All
 import com.artemis.annotations.Wire

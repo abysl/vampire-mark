@@ -2,7 +2,7 @@ package com.abysl.vampiremark.render
 
 import com.abysl.vampiremark.settings.GameSettings
 import com.abysl.vampiremark.settings.RenderSettings
-import com.abysl.vampiremark.world.spatial.conversions.ftile
+import com.abysl.vampiremark.world.spatial.units.UnitExtensions.tile
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -56,7 +56,7 @@ class GameRenderer(
                     }else {
                         drawable.position
                     }
-                batch.draw(drawable.texture, position.x, position.y, 1.ftile, 1.ftile)
+                batch.draw(drawable.texture, position.x, position.y, 1.tile.toPixelFloat(), 1.tile.toPixelFloat())
             }
         }
     }

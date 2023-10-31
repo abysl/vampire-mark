@@ -2,8 +2,8 @@ package com.abysl.vampiremark.ecs.system
 
 import com.abysl.vampiremark.ecs.components.CameraComponent
 import com.abysl.vampiremark.ecs.components.LocalPlayerComponent
-import com.abysl.vampiremark.ecs.components.PositionComponent
-import com.abysl.vampiremark.ecs.components.VelocityComponent
+import com.abysl.vampiremark.ecs.components.movement.PositionComponent
+import com.abysl.vampiremark.ecs.components.movement.VelocityComponent
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
