@@ -4,13 +4,11 @@ import com.abysl.vampiremark.settings.GameSettings
 import com.abysl.vampiremark.settings.RenderSettings
 import com.abysl.vampiremark.world.spatial.SpatialConfig
 import com.abysl.vampiremark.world.spatial.coordinates.ChunkCoordinate
-import com.abysl.vampiremark.world.spatial.coordinates.PixelCoordinate
 import com.abysl.vampiremark.world.spatial.coordinates.TileCoordinate
+import com.abysl.vampiremark.world.spatial.coordinates.toPixelCoordinate
 import com.abysl.vampiremark.world.spatial.units.UnitExtensions.layer
-import com.abysl.vampiremark.world.spatial.units.UnitExtensions.pixel
 import com.abysl.vampiremark.world.spatial.units.UnitExtensions.tile
 import com.abysl.vampiremark.world.tiles.ImmutableTileMap
-import com.abysl.vampiremark.world.tiles.TileMap
 import com.abysl.vampiremark.world.tiles.TileMapChunk
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
@@ -62,8 +60,8 @@ class GameRenderer(
 
         batch.projectionMatrix = camera.combined
         batch.use {
-            renderDrawables(renderFrame.drawables, physicsDelta)
             renderTiles(renderFrame.tileMap)
+            renderDrawables(renderFrame.drawables, physicsDelta)
         }
     }
 
@@ -85,31 +83,24 @@ class GameRenderer(
     }
 
     private fun renderTiles(tileMap: ImmutableTileMap) {
-        val cameraTileCoord = getCameraTileCoord()
-        val chunkCoord = cameraTileCoord.toChunkCoordinate()
-        val chunk = tileMap.getChunk(chunkCoord)
-        renderChunkTiles(chunk, chunkCoord)
+        val chunkCoordinate = camera.position.toPixelCoordinate().toChunkCoordinate()
+        val chunk: TileMapChunk = tileMap.getChunk(chunkCoordinate)
+        renderChunkTiles(chunk)
     }
 
-    private fun getCameraTileCoord(): TileCoordinate {
-        return TileCoordinate(
-            (camera.position.x / SpatialConfig.TILE_SIZE).toInt().tile,
-            (camera.position.y / SpatialConfig.TILE_SIZE).toInt().tile,
-            0.layer  // Assuming layer 0, update this if necessary
-        )
-    }
-
-    private fun renderChunkTiles(chunk: TileMapChunk, chunkCoord: ChunkCoordinate) {
+    private fun renderChunkTiles(chunk: TileMapChunk) {
         chunk.tileStacks.forEach { (tileCoord, tileStack) ->
-            val globalTileCoord = tileCoord.toGlobalCoordinate(chunkCoord)
-            val tilePosition = Vector2(
-                globalTileCoord.xTile.value * SpatialConfig.TILE_SIZE.toFloat(),
-                globalTileCoord.yTile.value * SpatialConfig.TILE_SIZE.toFloat()
-            )
+            val globalTileCoord = tileCoord.toGlobalCoordinate(chunk.coordinate)
             tileStack.tiles.forEach { tile ->
-                val texture = textureAtlas.findRegion(tile.aliases.random())
+                val texture = textureAtlas.findRegion(tile.aliases.first())
                 texture?.let {
-                    batch.draw(texture, tilePosition.x, tilePosition.y, 1.tile.toPixelFloat(), 1.tile.toPixelFloat())
+                    batch.draw(
+                        texture,
+                        globalTileCoord.x.toPixelFloat(),
+                        globalTileCoord.y.toPixelFloat(),
+                        1.tile.toPixelFloat(),
+                        1.tile.toPixelFloat()
+                    )
                 }
             }
         }

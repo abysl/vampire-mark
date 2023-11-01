@@ -44,7 +44,7 @@ class VelocitySystem : BaseEntitySystem() {
 
             // Normalize if there's movement
             if (velocity.x != 0 || velocity.y != 0) {
-                velocity.vec.nor().scl(player_speed.toUnitFloat())
+                velocity.vec.nor().scl(player_speed.toPixelFloat())
             }
         }
     }

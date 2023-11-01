@@ -5,6 +5,6 @@ import com.abysl.vampiremark.world.spatial.units.UnitExtensions.tile
 
 // The configuration object
 object SpatialConfig {
-    const val TILE_SIZE = 16
-    const val CHUNK_SIZE = 32
+    val TILE_SIZE = 16.pixel
+    val CHUNK_SIZE = 32.tile
 }

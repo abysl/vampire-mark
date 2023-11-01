@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class Coordinate(val x: SpatialUnit, val y: SpatialUnit, val z: Layer) {
-    fun toVector2(): Vector2 = Vector2(x.toUnitFloat(), y.toUnitFloat())
+    fun toUnitVector2(): Vector2 = Vector2(x.toUnitFloat(), y.toUnitFloat())
+    fun toPixelVector2(): Vector2 = Vector2(x.toPixelFloat(), y.toPixelFloat())
 
     operator fun plus(other: Coordinate): PixelCoordinate {
         return PixelCoordinate(
@@ -25,7 +26,7 @@ sealed class Coordinate(val x: SpatialUnit, val y: SpatialUnit, val z: Layer) {
         )
     }
 
-    operator fun times(factor: Int): PixelCoordinate {
+    operator fun times(factor: SpatialUnit): PixelCoordinate {
         return PixelCoordinate(
             this.x * factor,
             this.y * factor,
@@ -33,7 +34,7 @@ sealed class Coordinate(val x: SpatialUnit, val y: SpatialUnit, val z: Layer) {
         )
     }
 
-    operator fun div(factor: Int): PixelCoordinate {
+    operator fun div(factor: SpatialUnit): PixelCoordinate {
         return PixelCoordinate(
             this.x / factor,
             this.y / factor,
@@ -41,10 +42,10 @@ sealed class Coordinate(val x: SpatialUnit, val y: SpatialUnit, val z: Layer) {
         )
     }
 
-    operator fun rem(factor: Int): PixelCoordinate {
+    operator fun rem(factor: SpatialUnit): PixelCoordinate {
         return PixelCoordinate(
-            this.x % factor,
-            this.y % factor,
+            this.x.toPixel() % factor,
+            this.y.toPixel() % factor,
             this.z
         )
     }

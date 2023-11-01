@@ -30,8 +30,11 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("net.onedaybeard.artemis:artemis-odb:2.3.0")
     implementation("de.articdive:jnoise:3.0.2")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
+    testImplementation(kotlin("test"))
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 sourceSets {

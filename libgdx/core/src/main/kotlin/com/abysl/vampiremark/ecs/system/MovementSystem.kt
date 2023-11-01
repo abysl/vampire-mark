@@ -26,8 +26,5 @@ class MovementSystem : IteratingSystem() {
         val position = positionMapper[entityId]
         val velocity = velocityMapper[entityId]
         position.vec += (velocity.vec * world.delta)
-
-        val entity = world.getEntity(entityId)
-
     }
 }
